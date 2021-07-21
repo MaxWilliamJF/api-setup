@@ -1,0 +1,5 @@
+node_modules
+*.log
+__tests__/db.sqlite
+__tests__/db.sqlite
+__tests__/db.sqlite

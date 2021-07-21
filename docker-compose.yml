@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+    postgres-compose:
+        image: postgres
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=password
+            - APP_DB_USER=docker
+            - APP_DB_PASS=docker
+            - APP_DB_NAME=docker
+        ports:
+            - "15432:5432"
+        volumes:
+            - ./db:/docker-entrypoint-initdb.d/
+        networks:
+            postgres-compose-network:
+                ipv4_address: 172.25.0.2
+
+    pgadmin-compose:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: "maxwill@gmail.com.br"
+            PGADMIN_DEFAULT_PASSWORD: "pg_pass"
+        ports:
+            - "15643:80"
+        depends_on:
+            - postgres-compose
+        networks:
+            - postgres-compose-network
+
+networks:
+    postgres-compose-network:
+        driver: bridge
+        ipam:
+            config: 
+                - subnet: 172.25.0.0/16
